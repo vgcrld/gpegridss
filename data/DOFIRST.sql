@@ -1,8 +1,7 @@
+/*  
+    The help for this can be found at: https://ag-grid.com/documentation/javascript/server-side-operations-nodejs/
 
-
-/* 
-
-    start the docker container like this first:
+    Start the docker container like this first:
 
     docker run --rm -p 3306:3306 --name mysql-server -e MYSQL_ROOT_PASSWORD='pw' -v '/Users/rdavis/code/gpegrid-serverside/data:/setup' mysql:latest
 
