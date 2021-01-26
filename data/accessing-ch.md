@@ -5,12 +5,16 @@
 Easiest to make sure that you can access the data via table name
 and not have to do any column matching.
 
-`cd ~/code/gpe-server; mygpepodgo; bundle exec bin/create-views -e -s atsgroup`
+```bash
+cd ~/code/gpe-server
+mygpepodgo 
+bundle exec bin/create-views -e -s atsgroup
+```
 
 ## Forward the port (local)
 
-The `default-0` or `default-1` matter here. Where ever the `create-views` is run is where you need
-to port forward frome. 
+The `default-0` or `default-1` matter here. Whereever the `create-views` is run is where you need
+to port forward from. 
 
 `kubectl port-forward --namespace default svc/core-clickhouse-default-0 8123`
 
