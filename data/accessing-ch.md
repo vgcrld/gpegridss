@@ -36,7 +36,7 @@ alias chp='curl "http://127.0.0.1:8123?database=data__Prudential" --data-binary 
 
 This is a sample on how to use the `ch` alias.
 
-`echo ‘select * from transient_tsmtimeline’ | ch`
+`echo 'select 1 as ONE FORMAT CSVWithNames' | ch`
 
 
 ## Select Samples
@@ -46,11 +46,8 @@ Clickhouse does exactly what we want with buckets. It can make the buckets we ne
 
 ```bash
 
-# Simple test of the ch helper
-echo 'select 1' | ch
-
 # Get all the tables defined
-echo ‘show tables’ | ch | less
+echo 'show tables' | ch | less
 
 # Some examples of getting the start of intervals from CH.
 echo '
@@ -58,7 +55,7 @@ echo '
     from transient_tsmtimeline 
     group by ts, id, act 
     order by sort_id
-'
+' | ch
 
 echo '
     select toStartOfInterval(poll_ts, INTERVAL 1 month ) ts,item_id id,count(*) 
