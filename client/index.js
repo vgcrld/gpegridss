@@ -17,15 +17,70 @@ const gridOptions = {
         resizable: true
     },
 
+    defaultColGroupDef: {
+
+    },
+
+    columnTypes: {
+        sumColumn: {
+            aggFunc: 'sum',
+            sortable: true
+        },
+        maxColumn: {
+            aggFunc: 'max',
+            sortable: true,
+        },
+        minColumn: {
+            aggFunc: 'min',
+            sortable: true,
+        },
+        valueColumn: {
+            aggFunc: 'min',
+            sortable: true,
+            editable: true,
+        },
+        groupColumn: {
+            rowGroup: true, 
+        },
+    },
+
     columnDefs: [
-        { headerName: 'Activity', field: 'CfgTsmTimelineActivity', rowGroup: true, hide: true },
-        { headerName: 'Entity', field: 'CfgTsmTimelineEntity', rowGroup: true, hide: true },
-        { headerName: 'Examined', field: 'TSMTIMELINE_Examined', aggFunc: 'sum', type: 'numericColumn'},
-        { headerName: 'Affected', field: 'TSMTIMELINE_Affected', aggFunc: 'sum', type: 'numericColumn'},
-        { headerName: 'Failed', field: 'TSMTIMELINE_Failed', aggFunc: 'sum', type: 'numericColumn'},
-        { headerName: 'MB', field: 'TSMTIMELINE_Bytes', aggFunc: 'sum', type: 'numericColumn'},
-        { headerName: 'Date Time', field: 'poll_ts' },
-    ],
+        { type: [ 'groupColumn' ], headerName: 'Activity', field: 'CfgTsmTimelineActivity' },
+        { type: [ 'groupColumn' ], headerName: 'Entity', field: 'CfgTsmTimelineEntity' },
+        { type: [ 'valueColumn' ], headerName: 'Cost', field: 'null'},
+        { type: [ 'minColumn' ], headerName: 'Timestamp', field: 'poll_ts' },
+        { type: [ 'minColumn' ], headerName: 'Start', field: 'epoch_start' },
+        { type: [ 'minColumn' ], headerName: 'End', field: 'epoch_end' },
+        { type: [ 'sumColumn' ], headerName: 'Examined', field: 'TSMTIMELINE_Examined' },
+        { type: [ 'sumColumn' ], headerName: 'Affected', field: 'TSMTIMELINE_Affected' },
+        { type: [ 'sumColumn' ], headerName: 'Failed', field: 'TSMTIMELINE_Failed' },
+        { type: [ 'sumColumn' ], headerName: 'Bytes', field: 'TSMTIMELINE_Bytes' },
+        { type: [ 'sumColumn' ], headerName: 'Idle', field: 'TSMTIMELINE_Idle' },
+        { type: [ 'sumColumn' ], headerName: 'Media Wait', field: 'TSMTIMELINE_Mediaw' },
+        { type: [ 'sumColumn' ], headerName: 'Processes', field: 'TSMTIMELINE_Processes' },
+        { type: [ 'sumColumn' ], headerName: 'Completion Code', field: 'TSMTIMELINE_Completion_code' },
+        { type: [ 'sumColumn' ], headerName: 'Comm Wait', field: 'TSMTIMELINE_Comm_wait' },
+        { type: [ 'sumColumn' ], headerName: 'Protected', field: 'TSMTIMELINE_Bytes_protected' },
+        { type: [ 'sumColumn' ], headerName: 'Written', field: 'TSMTIMELINE_Bytes_written' },
+        { type: [ 'sumColumn' ], headerName: 'Dedup Savings', field: 'TSMTIMELINE_Dedup_savings' },
+        { type: [ 'sumColumn' ], headerName: 'Compression Savings', field: 'TSMTIMELINE_Comp_savings' },
+        { type: [ 'maxColumn' ], headerName: 'Details', field: 'CfgTsmTimelineActivity_details' },
+        { type: [ 'maxColumn' ], headerName: 'Type', field: 'CfgTsmTimelineActivity_type' },
+        { type: [ 'maxColumn' ], headerName: 'Number', field: 'CfgTsmTimelineNumber' },
+        { type: [ 'maxColumn' ], headerName: 'As Entity', field: 'CfgTsmTimelineAs_entity' },
+        { type: [ 'maxColumn' ], headerName: 'Sub Entity', field: 'CfgTsmTimelineSub_entity' },
+        { type: [ 'maxColumn' ], headerName: 'Comm Method', field: 'CfgTsmTimelineCommmeth' },
+        { type: [ 'maxColumn' ], headerName: 'Address', field: 'CfgTsmTimelineAddress' },
+        { type: [ 'maxColumn' ], headerName: 'Schedule Name', field: 'CfgTsmTimelineSchedule_name' },
+        { type: [ 'maxColumn' ], headerName: 'Successful', field: 'CfgTsmTimelineSuccessful' },
+        { type: [ 'maxColumn' ], headerName: 'Volumne', field: 'CfgTsmTimelineVolume_name' },
+        { type: [ 'maxColumn' ], headerName: 'Drive', field: 'CfgTsmTimelineDrive_name' },
+        { type: [ 'maxColumn' ], headerName: 'Library', field: 'CfgTsmTimelineLibrary_name' },
+        { type: [ 'maxColumn' ], headerName: 'Last Use', field: 'CfgTsmTimelineLast_use' },
+        { type: [ 'maxColumn' ], headerName: 'Offsite Volumes', field: 'CfgTsmTimelineNum_offsite_vols' },
+        { type: [ 'maxColumn' ], headerName: 'Instance', field: 'CfgTsmTimelineInstance' },
+        { type: [ 'maxColumn' ], headerName: 'Node', field: 'CfgTsmTimelineNodeName' }
+    ]
 
     // debug: true,
     // cacheBlockSize: 20,
