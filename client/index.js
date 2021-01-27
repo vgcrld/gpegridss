@@ -18,7 +18,7 @@ const gridOptions = {
     },
 
     columnDefs: [
-        { headerName: 'Activity', field: 'CfgTsmTimelineActivity', rowGroup: true, hide: tru },
+        { headerName: 'Activity', field: 'CfgTsmTimelineActivity', rowGroup: true, hide: true },
         { headerName: 'Entity', field: 'CfgTsmTimelineEntity', rowGroup: true, hide: true },
         { headerName: 'Examined', field: 'TSMTIMELINE_Examined', aggFunc: 'sum', type: 'numericColumn'},
         { headerName: 'Affected', field: 'TSMTIMELINE_Affected', aggFunc: 'sum', type: 'numericColumn'},
