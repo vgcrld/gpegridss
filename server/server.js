@@ -5,7 +5,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import OlympicWinnersService from './olympicWinnersService';
-import GpeTsmTimelineService from './GpeTsmTimelineService';
+import GpeTsmTimelineService from './gpeTsmTimelineService';
 
 const app = express();
 app.use(webpackMiddleware(webpack(webpackConfig)));
