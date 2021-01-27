@@ -1,14 +1,15 @@
-# ag-Grid Server-Side Node.js Example
+# GPE Grid Server-Side Node.js Example
+
+## Original Copied Frin ag-Grid
+
+This was compied from the ag-Grid site as a starting point and modified to access clickhouse.
 
 A reference implementation showing how to perform server-side operations using ag-Grid with node.js and MySQL.
 
-![](https://github.com/ag-grid/ag-grid/blob/latest/packages/ag-grid-docs/src/nodejs-server-side-operations/app-arch.png "")
-
 For full details see: http://ag-grid.com/nodejs-server-side-operations/
-
 ## Usage
 
-- Clone the project
-- run `yarn install`
-- start with `yarn start`
-- open browser at `localhost:4000`
+See the setup doc [here](data/accessing-ch.md) first.
+
+
+
