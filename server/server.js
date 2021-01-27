@@ -5,6 +5,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 
 import OlympicWinnersService from './olympicWinnersService';
+import GpeTsmTimelineService from './GpeTsmTimelineService';
 
 const app = express();
 app.use(webpackMiddleware(webpack(webpackConfig)));
@@ -14,6 +15,12 @@ app.use(bodyParser.json());
 
 app.post('/olympicWinners', function (req, res) {
     OlympicWinnersService.getData(req.body, (rows, lastRow) => {
+        res.json({rows: rows, lastRow: lastRow});
+    });
+});
+
+app.post('/gpeTsmTimeline', function (req, res) {
+    GpeTsmTimelineService.getData(req.body, (rows, lastRow) => {
         res.json({rows: rows, lastRow: lastRow});
     });
 });

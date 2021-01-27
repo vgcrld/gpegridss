@@ -8,14 +8,24 @@ const gridOptions = {
 
     rowModelType: 'serverSide',
 
+    // columnDefs: [
+    //     {field: 'athlete'},
+    //     {field: 'country', rowGroup: true, hide: true},
+    //     {field: 'sport', rowGroup: true, hide: true},
+    //     {field: 'year', filter: 'number', filterParams: {newRowsAction: 'keep'}},
+    //     {field: 'gold', aggFunc: 'sum'},
+    //     {field: 'silver', aggFunc: 'sum'},
+    //     {field: 'bronze', aggFunc: 'sum'},
+    // ],
+
     columnDefs: [
-        {field: 'athlete'},
-        {field: 'country', rowGroup: true, hide: true},
-        {field: 'sport', rowGroup: true, hide: true},
-        {field: 'year', filter: 'number', filterParams: {newRowsAction: 'keep'}},
-        {field: 'gold', aggFunc: 'sum'},
-        {field: 'silver', aggFunc: 'sum'},
-        {field: 'bronze', aggFunc: 'sum'},
+        { headerName: 'Activity', field: 'CfgTsmTimelineActivity', rowGroup: true, hide: true},
+        { headerName: 'Entity', field: 'CfgTsmTimelineEntity', rowGroup: true, hide: true},
+        { headerName: 'Examined', field: 'TSMTIMELINE_Examined', aggFunc: 'sum'},
+        { headerName: 'Affected', field: 'TSMTIMELINE_Affected', aggFunc: 'sum'},
+        { headerName: 'Failed', field: 'TSMTIMELINE_Failed', aggFunc: 'sum'},
+        { headerName: 'Bytes', field: 'TSMTIMELINE_Bytes', aggFunc: 'sum'},
+        { headerName: 'Date Time', field: 'poll_ts'},
     ],
 
     defaultColDef: {
@@ -37,7 +47,7 @@ const datasource = {
     getRows(params) {
          console.log(JSON.stringify(params.request, null, 1));
 
-         fetch('./olympicWinners/', {
+         fetch('./gpeTsmTimeline/', {
              method: 'post',
              body: JSON.stringify(params.request),
              headers: {"Content-Type": "application/json; charset=utf-8"}
