@@ -4,7 +4,6 @@ import webpackConfig from '../webpack.config.js';
 import express from 'express';
 import bodyParser from 'body-parser';
 
-import OlympicWinnersService from './olympicWinnersService';
 import GpeTsmTimelineService from './gpeTsmTimelineService';
 
 const app = express();
