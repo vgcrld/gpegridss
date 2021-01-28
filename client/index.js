@@ -12,7 +12,7 @@ const gridOptions = {
     enableCharts: true,
     grouping: true,
     enableRangeSelection: true,
-    pivotMode: false,
+    sideBar: false,   
 
 
     defaultColDef: {
