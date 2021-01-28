@@ -7,12 +7,16 @@ import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 const gridOptions = {
 
     rowModelType: 'serverSide',
+    serverSideStoreType: 'full',
+    animateRows: true,
     enableCharts: true,
+    grouping: true,
     enableRangeSelection: true,
+    pivotMode: false,
 
 
     defaultColDef: {
-        filter: false,
+        filter: true,
         sortable: true,
         resizable: true
     },
@@ -51,10 +55,10 @@ const gridOptions = {
     },
 
     columnDefs: [
-        { type: ['showColumn', 'groupColumn'], headerName: 'Activity', field: 'CfgTsmTimelineActivity' },
-        { type: ['showColumn', 'groupColumn'], headerName: 'Entity', field: 'CfgTsmTimelineEntity' },
+        { type: ['showColumn'], headerName: 'Activity', field: 'CfgTsmTimelineActivity'},
+        { type: ['showColumn'], headerName: 'Entity', field: 'CfgTsmTimelineEntity' },
         { type: ['showColumn', 'valueColumn'], headerName: 'Cost', field: 'null' },
-        { type: ['showColumn', 'minColumn', 'numericColumn'], headerName: 'Timestamp', field: 'poll_ts' },
+        { type: ['showColumn', 'minColumn', 'numericColumn'], headerName: 'Timestamp', field: 'poll_ts', sort: 'asc' },
         { type: ['showColumn', 'sumColumn', 'numericColumn'], headerName: 'Bytes', field: 'TSMTIMELINE_Bytes', valueFormatter: commaSeparateNumber },
         { type: ['hideColumn', 'minColumn', 'numericColumn'], headerName: 'Start', field: 'epoch_start' },
         { type: ['hideColumn', 'minColumn', 'numericColumn'], headerName: 'End', field: 'epoch_end' },
@@ -86,14 +90,16 @@ const gridOptions = {
         { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Offsite Volumes', field: 'CfgTsmTimelineNum_offsite_vols' },
         { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Instance', field: 'CfgTsmTimelineInstance' },
         { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Node', field: 'CfgTsmTimelineNodeName' }
-    ]
+    ],
 
-    // debug: true,
-    // cacheBlockSize: 20,
+    debug: true,
+
+    cacheBlockSize: 3000,
     // maxBlocksInCache: 3,
     // purgeClosedRowNodes: true,
     // maxConcurrentDatasourceRequests: 2,
     // blockLoadDebounceMillis: 1000
+
 };
 
 const gridDiv = document.querySelector('#myGrid');
