@@ -12,12 +12,6 @@ app.use(webpackMiddleware(webpack(webpackConfig)));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-app.post('/olympicWinners', function (req, res) {
-    OlympicWinnersService.getData(req.body, (rows, lastRow) => {
-        res.json({rows: rows, lastRow: lastRow});
-    });
-});
-
 app.post('/gpeTsmTimeline', function (req, res) {
     GpeTsmTimelineService.getData(req.body, (rows, lastRow) => {
         res.json({rows: rows, lastRow: lastRow});
