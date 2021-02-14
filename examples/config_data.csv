@@ -1,0 +1,7 @@
+type,item_id,config_id,config,config_ts,value,item.item_id,name
+tsminstance,3,9,CfgCollectionInterval,2021-02-12 22:40:56,300,3,CORP-DR
+tsminstance,3,3,CfgName,2021-02-12 22:40:56,CORP-DR,3,CORP-DR
+tsminstance,3,18,CfgTsmInstanceGpeAgentVersion,2021-02-12 22:40:56,1.0-2.0,3,CORP-DR
+tsminstance,3,6,CfgTsmInstanceName,2021-02-12 22:40:56,CORP-DR,3,CORP-DR
+tsminstance,3,15,CfgTsmInstanceOutboundReplication,2021-02-12 22:40:56,ENABLED,3,CORP-DR
+tsminstance,3,12,CfgTsmInstanceVersion,2021-02-12 22:40:56,8.1.8.0,3,CORP-DR

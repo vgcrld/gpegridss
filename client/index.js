@@ -12,8 +12,12 @@ const gridOptions = {
     enableCharts: true,
     grouping: true,
     enableRangeSelection: true,
-    sideBar: false,   
+    sideBar: true,   
     groupMultiAutoColumn: false,
+    enablePivotMode: true, 
+    groupSelectsChildren: true,
+    groupUseEntireRow: false,
+    showOpenedGroup: false,
 
 
     defaultColDef: {
@@ -22,78 +26,44 @@ const gridOptions = {
         resizable: true
     },
 
-    defaultColGroupDef: {
-
-    },
-
-    columnTypes: {
-        showColumn: {
-            hide: false
-        },
-        hideColumn: {
-            hide: true
-        },
-        sumColumn: {
-            aggFunc: 'sum',
-            sortable: true
-        },
-        maxColumn: {
-            aggFunc: 'max',
-            sortable: true,
-        },
-        minColumn: {
-            aggFunc: 'min',
-            sortable: true,
-        },
-        valueColumn: {
-            aggFunc: 'min',
-            sortable: true,
-            editable: true,
-        },
-        groupColumn: {
-            rowGroup: true
-        },
-    },
-
     columnDefs: [
-        { type: ['showColumn'], headerName: 'Activity', field: 'CfgTsmTimelineActivity', rowGroup: true },
-        { type: ['showColumn'], headerName: 'Month', field: 'toStartOfMonth(poll_ts)', rowGroup: true },
-        { type: ['showColumn'], headerName: 'Day', field: 'toStartOfDay(poll_ts)', rowGroup: true },
-        // { type: ['showColumn'], headerName: 'Entity', field: 'CfgTsmTimelineEntity', rowGroup: true },
-        { type: ['showColumn', 'sumColumn', 'numericColumn'], headerName: 'Bytes', field: 'TSMTIMELINE_Bytes', valueFormatter: commaSeparateNumber },
-        { type: ['showColumn'],    headerName: 'Hour', field: 'poll_ts)' },
-        { type: ['showColumn'],    headerName: 'Entity',   field: 'CfgTsmTimelineEntity' },
-        { type: ['numericColumn'], headerName: 'Examined', field: 'TSMTIMELINE_Examined' },
-        { type: ['numericColumn'], headerName: 'Affected', field: 'TSMTIMELINE_Affected' },
-        { type: ['numericColumn'], headerName: 'Failed', field: 'TSMTIMELINE_Failed' },
-        { type: ['numericColumn'], headerName: 'Idle', field: 'TSMTIMELINE_Idle' },
-        // { type: ['showColumn', 'valueColumn'], headerName: 'Cost', field: 'null' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Start', field: 'epoch_start' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'End', field: 'epoch_end' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Media Wait', field: 'TSMTIMELINE_Mediaw' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Processes', field: 'TSMTIMELINE_Processes' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Completion Code', field: 'TSMTIMELINE_Completion_code' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Comm Wait', field: 'TSMTIMELINE_Comm_wait' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Protected', field: 'TSMTIMELINE_Bytes_protected' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Written', field: 'TSMTIMELINE_Bytes_written' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Dedup Savings', field: 'TSMTIMELINE_Dedup_savings' },
-        // { type: ['hideColumn', 'sumColumn', 'numericColumn'], headerName: 'Compression Savings', field: 'TSMTIMELINE_Comp_savings' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Details', field: 'CfgTsmTimelineActivity_details' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Type', field: 'CfgTsmTimelineActivity_type' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Number', field: 'CfgTsmTimelineNumber' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'As Entity', field: 'CfgTsmTimelineAs_entity' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Sub Entity', field: 'CfgTsmTimelineSub_entity' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Comm Method', field: 'CfgTsmTimelineCommmeth' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Address', field: 'CfgTsmTimelineAddress' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Schedule Name', field: 'CfgTsmTimelineSchedule_name' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Successful', field: 'CfgTsmTimelineSuccessful' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Volumne', field: 'CfgTsmTimelineVolume_name' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Drive', field: 'CfgTsmTimelineDrive_name' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Library', field: 'CfgTsmTimelineLibrary_name' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Last Use', field: 'CfgTsmTimelineLast_use' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Offsite Volumes', field: 'CfgTsmTimelineNum_offsite_vols' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Instance', field: 'CfgTsmTimelineInstance' },
-        // { type: ['hideColumn', 'maxColumn', 'numericColumn'], headerName: 'Node', field: 'CfgTsmTimelineNodeName' }
+        { headerName: 'Activity', field: 'CfgTsmTimelineActivity', rowGroup: true },
+        { headerName: 'Year', field: 'toYear(toStartOfYear(poll_ts))', rowGroup: true },
+        { headerName: 'Month', field: 'toMonth(toStartOfMonth(poll_ts))', rowGroup: true },
+        { headerName: 'Day', field: 'toDayOfMonth(toStartOfDay(poll_ts))', rowGroup: true },
+        { headerName: 'Entity', field: 'CfgTsmTimelineEntity', aggFunc: 'max' },
+        { headerName: 'Bytes', field: 'TSMTIMELINE_Bytes', aggFunc: 'max', valueFormatter: commaSeparateNumber }
+        // { field: 'TSMTIMELINE_Examined' },
+        // { field: 'TSMTIMELINE_Affected' },
+        // { field: 'TSMTIMELINE_Failed' },
+        // { field: 'TSMTIMELINE_Idle' },
+        // { field: 'null' },
+        // { field: 'epoch_start' },
+        // { field: 'epoch_end' },
+        // { field: 'TSMTIMELINE_Mediaw' },
+        // { field: 'TSMTIMELINE_Processes' },
+        // { field: 'TSMTIMELINE_Completion_code' },
+        // { field: 'TSMTIMELINE_Comm_wait' },
+        // { field: 'TSMTIMELINE_Bytes_protected' },
+        // { field: 'TSMTIMELINE_Bytes_written' },
+        // { field: 'TSMTIMELINE_Dedup_savings' },
+        // { field: 'TSMTIMELINE_Comp_savings' },
+        // { field: 'CfgTsmTimelineActivity_details' },
+        // { field: 'CfgTsmTimelineActivity_type' },
+        // { field: 'CfgTsmTimelineNumber' },
+        // { field: 'CfgTsmTimelineAs' },
+        // { field: 'CfgTsmTimelineSub_entity' },
+        // { field: 'CfgTsmTimelineCommmeth' },
+        // { field: 'CfgTsmTimelineAddress' },
+        // { field: 'CfgTsmTimelineSchedule_name' },
+        // { field: 'CfgTsmTimelineSuccessful' },
+        // { field: 'CfgTsmTimelineVolume_name' },
+        // { field: 'CfgTsmTimelineDrive_name' },
+        // { field: 'CfgTsmTimelineLibrary_name' },
+        // { field: 'CfgTsmTimelineLast_use' },
+        // { field: 'CfgTsmTimelineNum_offsite_vols' },
+        // { field: 'CfgTsmTimelineInstance' },
+        // { field: 'CfgTsmTimelineNodeName' }
     ],
 
     debug: true,

@@ -17,6 +17,7 @@
 --
 -- Table structure for table `olympic_winners`
 --
+USE sample_data;
 
 DROP TABLE IF EXISTS `olympic_winners`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
