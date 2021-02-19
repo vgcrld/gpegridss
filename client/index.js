@@ -10,6 +10,18 @@ function setQuickFilter() {
   gridOptions.api.setQuickFilter(value);
 }
 
+var typeFilter = {
+  buttons: [ 'reset', 'apply' ],
+  values: function (params) {
+    fetch('/types')
+      .then(response => response.json())
+      .then((o) => {
+        let vals = o.rows.map( r => r.type );
+        params.success(vals);
+    })
+  },
+};
+
 const tsmColumnDefs = [
   { headerName: "Activity", field: "CfgTsmTimelineActivity", rowGroup: true },
   {
@@ -75,17 +87,13 @@ const tsmDatasource = {
 };
 
 const itemColumnDefs = [
-  { headerName: "Type", field: "type", rowGroup: true },
-  { headerName: "Tags", field: "tags", rowGroup: true },
-  { headerName: "Name", field: "n`ame", rowGroup: true },
+  { headerName: "Year", field: "toStartOfYear(last_trend_ts)", rowGroup: true },
+  { headerName: "Month", field: "toStartOfMonth(last_trend_ts)", rowGroup: true },
+  { headerName: "Day", field: "toStartOfDay(last_trend_ts)", rowGroup: true },
+  { headerName: "Type", field: "type", rowGroup: true, filter: true, filterParams: typeFilter },
+  { headerName: "Name", field: "name", rowGroup: true },
   { headerName: "ID", field: "item_id", rowGroup: true, type: "rightAligned" },
-  {
-    headerName: "Items",
-    field: "key",
-    aggFunc: "count",
-    valueFormatter: "numberCellFormatter",
-    type: "rightAligned",
-  },
+  { headerName: "Items", field: "key", aggFunc: "count", valueFormatter: "numberCellFormatter", type: "rightAligned", hide: false}, 
 ];
 
 const itemDatasource = {
@@ -119,26 +127,27 @@ const gridOptions = {
   animateRows: true,
   enableCharts: true,
   grouping: true,
-  rowHeight: 30,
+  rowHeight: 35,
   enableRangeSelection: true,
   sideBar: true,
   // enablePivotMode: true,
   groupSelectsChildren: true,
-  // groupMultiAutoColumn: true,
-  groupUseEntireRow: false,
+  groupMultiAutoColumn: true,
+  groupUseEntireRow: true,
   showOpenedGroup: true,
 
   columnDefs: gpeColumns,
 
   defaultColDef: {
-    filter: true,
-    sortable: true,
+    // filter: true,
+    // sortable: true,
+    hide: true,
     resizable: true,
   },
 
   debug: true,
 
-  cacheBlockSize: 3000,
+  cacheBlockSize: 200,
   // maxBlocksInCache: 3,
   // purgeClosedRowNodes: true,
   // maxConcurrentDatasourceRequests: 2,

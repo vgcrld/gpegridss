@@ -5,6 +5,8 @@ const t = t => console.table(t);
 class GpeDataService {
 
   getData(connection, table, request, resultsCallback) {
+
+
     const SQL = this.buildSql(table,request);
 
     connection.query(SQL, (error, results) => {
@@ -12,6 +14,14 @@ class GpeDataService {
       const resultsForPage = this.cutResultsToPageSize(request, results);
       console.log(error);
       resultsCallback(resultsForPage, rowCount);
+    });
+  }
+
+  getGpeData(sql, connection, request, resultsCallback) {
+    console.log(sql)
+    connection.query(sql, (error, results) => {
+      console.log(error);
+      resultsCallback(results);
     });
   }
 
@@ -56,14 +66,24 @@ class GpeDataService {
   }
 
   createFilterSql(key, item) {
+    p('here')
+    p(key)
+    p(item)
     switch (item.filterType) {
       case "text":
         return this.createTextFilterSql(key, item);
       case "number":
         return this.createNumberFilterSql(key, item);
+      case "set":
+        return this.setSetFilterSql(key, item);
       default:
         console.log("unkonwn filter type: " + item.filterType);
     }
+  }
+  
+  setSetFilterSql(key,item) {
+    let clause =`${key} in ('${item.values.join(`','`)}')`
+    return clause
   }
 
   createNumberFilterSql(key, item) {

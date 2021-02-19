@@ -7,7 +7,7 @@ import { ClickHouse } from 'clickhouse';
 
 import GpeDataService from './gpeDataService';
 
-const site = 'DandH';
+const site = 'Prudential';
 
 const connection =  new ClickHouse({
       url: "http://localhost",
@@ -33,6 +33,13 @@ app.use(bodyParser.json());
 app.post('/gpeTsmTimeline', function (req, res) {
     GpeDataService.getData(connection, 'transient_tsmtimeline', req.body, (rows, lastRow) => {
         res.json({rows: rows, lastRow: lastRow});
+    });
+});
+
+app.get('/types', function (req, res) {
+    let sql = `select distinct type from __items`
+    GpeDataService.getGpeData(sql, connection, req.body, (rows) => {
+        res.json({rows: rows});
     });
 });
 
