@@ -5,10 +5,7 @@ const t = t => console.table(t);
 class GpeDataService {
 
   getData(connection, table, request, resultsCallback) {
-
-
     const SQL = this.buildSql(table,request);
-
     connection.query(SQL, (error, results) => {
       const rowCount = this.getRowCount(request, results);
       const resultsForPage = this.cutResultsToPageSize(request, results);
@@ -18,7 +15,6 @@ class GpeDataService {
   }
 
   getGpeData(sql, connection, request, resultsCallback) {
-    console.log(sql)
     connection.query(sql, (error, results) => {
       console.log(error);
       resultsCallback(results);
@@ -34,11 +30,10 @@ class GpeDataService {
     const orderBySql = this.createOrderBySql(request);
     const groupBySql = this.createGroupBySql(request);
 
-    const SQL =
-      selectSql + fromSql + whereSql + groupBySql + orderBySql + limitSql;
+    const SQL = selectSql + fromSql + whereSql + groupBySql + orderBySql + limitSql;
 
     console.log(SQL);
-
+    
     return SQL;
   }
 
@@ -52,8 +47,9 @@ class GpeDataService {
 
       const rowGroupCol = rowGroupCols[groupKeys.length];
       colsToSelect.push(rowGroupCol.field);
-
+      p(rowGroupCol)
       valueCols.forEach(function (valueCol) {
+        p(valueCol)
         colsToSelect.push(
           valueCol.aggFunc + "(" + valueCol.field + ") as " + valueCol.field
         );
@@ -61,7 +57,7 @@ class GpeDataService {
 
       return " select " + colsToSelect.join(", ");
     }
-
+    
     return " select *";
   }
 
@@ -86,8 +82,6 @@ class GpeDataService {
   }
 
   createDateFilterSql(key,item) {
-    t(key)
-    p(item)
     switch (item.type) {
       case 'equals':
         return `(${key} = '${item.dateFrom}')`
@@ -171,6 +165,7 @@ class GpeDataService {
     }
 
     if (filterModel) {
+      p(filterModel)
       const keySet = Object.keys(filterModel);
       keySet.forEach(function (key) {
         const item = filterModel[key];
@@ -203,7 +198,6 @@ class GpeDataService {
   }
 
   createOrderBySql(request) {
-    console.log("in order by");
     const rowGroupCols = request.rowGroupCols;
     const groupKeys = request.groupKeys;
     const sortModel = request.sortModel;
