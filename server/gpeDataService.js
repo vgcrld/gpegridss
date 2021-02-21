@@ -66,24 +66,41 @@ class GpeDataService {
   }
 
   createFilterSql(key, item) {
-    p('here')
-    p(key)
-    p(item)
     switch (item.filterType) {
       case "text":
         return this.createTextFilterSql(key, item);
       case "number":
         return this.createNumberFilterSql(key, item);
       case "set":
-        return this.setSetFilterSql(key, item);
+        return this.createInFilterSql(key, item);
+      case "date":
+        return this.createDateFilterSql(key, item);
       default:
         console.log("unkonwn filter type: " + item.filterType);
     }
   }
   
-  setSetFilterSql(key,item) {
+  createInFilterSql(key,item) {
     let clause =`${key} in ('${item.values.join(`','`)}')`
     return clause
+  }
+
+  createDateFilterSql(key,item) {
+    t(key)
+    p(item)
+    switch (item.type) {
+      case 'equals':
+        return `(${key} = '${item.dateFrom}')`
+      case 'inRange':
+        return `(${key} >= '${item.dateFrom}' and ${key} <= '${item.dateTo}')`
+      case 'greaterThan':
+        return `(${key} >= '${item.dateFrom}')`
+      case 'lessThan':
+        return `(${key} <= '${item.dateFrom}')`
+      default:
+        p(`case for ${item.type} is not defined`)
+        return null
+    }
   }
 
   createNumberFilterSql(key, item) {

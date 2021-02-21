@@ -7,7 +7,7 @@ import { ClickHouse } from 'clickhouse';
 
 import GpeDataService from './gpeDataService';
 
-const site = 'Prudential';
+const site = 'DandH';
 
 const connection =  new ClickHouse({
       url: "http://localhost",
@@ -38,6 +38,20 @@ app.post('/gpeTsmTimeline', function (req, res) {
 
 app.get('/types', function (req, res) {
     let sql = `select distinct type from __items`
+    GpeDataService.getGpeData(sql, connection, req.body, (rows) => {
+        res.json({rows: rows});
+    });
+});
+
+app.get('/tags', function (req, res) {
+    let sql = `select distinct toString(tags) as tags from __items`
+    GpeDataService.getGpeData(sql, connection, req.body, (rows) => {
+        res.json({rows: rows});
+    });
+});
+
+app.get('/names', function (req, res) {
+    let sql = `select distinct name from __items where type in ('brocade','host')`
     GpeDataService.getGpeData(sql, connection, req.body, (rows) => {
         res.json({rows: rows});
     });

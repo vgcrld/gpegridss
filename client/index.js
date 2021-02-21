@@ -4,12 +4,6 @@ import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
 import "ag-grid-community/dist/styles/ag-theme-alpine.css";
 
-// Call every time the quick filter is updated to narrow the page.
-function setQuickFilter() {
-  value = document.querySelector("#quick-filter").value;
-  gridOptions.api.setQuickFilter(value);
-}
-
 var typeFilter = {
   buttons: [ 'reset', 'apply' ],
   values: function (params) {
@@ -21,6 +15,70 @@ var typeFilter = {
     })
   },
 };
+
+var tagFilter = {
+  buttons: [ 'reset', 'apply' ],
+  values: function (params) {
+    fetch('/tags')
+      .then(response => response.json())
+      .then((o) => {
+        let vals = o.rows.map( r => r.tags );
+        params.success(vals);
+    })
+  },
+};
+
+var dateFilter = {
+  buttons: [ 'reset', 'apply' ],
+  comparator: function (filterLocalDateAtMidnight, cellValue) {
+    var dateAsString = cellValue;
+    if (dateAsString == null) return -1;
+    var dateParts = dateAsString.split('/');
+    var cellDate = new Date(
+      Number(dateParts[2]),
+      Number(dateParts[1]) - 1,
+      Number(dateParts[0])
+    );
+
+    if (filterLocalDateAtMidnight.getTime() === cellDate.getTime()) {
+      return 0;
+    }
+
+    if (cellDate < filterLocalDateAtMidnight) {
+      return -1;
+    }
+
+    if (cellDate > filterLocalDateAtMidnight) {
+      return 1;
+    }
+  },
+  browserDatePicker: true,
+  minValidYear: 2000,
+  filterOptions: [ 
+    // 'equals',
+    'inRange',
+    'greaterThan',
+    'lessThan'
+  ]
+};
+
+var nameFilter = {
+  buttons: [ 'reset', 'apply' ],
+  values: function (params) {
+    fetch('/names')
+      .then(response => response.json())
+      .then((o) => {
+        let vals = o.rows.map( r => r.name );
+        params.success(vals);
+    })
+  },
+};
+
+// Call every time the quick filter is updated to narrow the page.
+function bob() {
+  val = document.querySelector("#quick-filter").value;
+  gridOptions.api.setQuickFilter(val);
+}
 
 const tsmColumnDefs = [
   { headerName: "Activity", field: "CfgTsmTimelineActivity", rowGroup: true },
@@ -87,13 +145,16 @@ const tsmDatasource = {
 };
 
 const itemColumnDefs = [
+  { headerName: "Date/Time", field: "last_trend_ts", hide: true, rowGroup: false, sort: 'asc', filter: 'agDateColumnFilter', filterParams: dateFilter },
   { headerName: "Year", field: "toStartOfYear(last_trend_ts)", rowGroup: true },
   { headerName: "Month", field: "toStartOfMonth(last_trend_ts)", rowGroup: true },
   { headerName: "Day", field: "toStartOfDay(last_trend_ts)", rowGroup: true },
+  { headerName: "Hour", field: "toStartOfHour(last_trend_ts)", rowGroup: true },
+  // { headerName: "Tags", field: "toString(tags)", rowGroup: true, filter: true, filterParams: tagFilter },
   { headerName: "Type", field: "type", rowGroup: true, filter: true, filterParams: typeFilter },
-  { headerName: "Name", field: "name", rowGroup: true },
-  { headerName: "ID", field: "item_id", rowGroup: true, type: "rightAligned" },
-  { headerName: "Items", field: "key", aggFunc: "count", valueFormatter: "numberCellFormatter", type: "rightAligned", hide: false}, 
+  // { headerName: "Name", field: "name", rowGroup: true, filter: true, filterParams: nameFilter },
+  // { headerName: "ID", field: "item_id", rowGroup: true, type: "rightAligned" },
+  { headerName: "Items", field: "key", aggFunc: "count", valueFormatter: "numberCellFormatter", type: "rightAligned", hide: false, sortable: true }, 
 ];
 
 const itemDatasource = {
@@ -123,14 +184,14 @@ var gpeColumns = itemColumnDefs;
 
 const gridOptions = {
   rowModelType: "serverSide",
-  serverSideStoreType: "full",
+  serverSideStoreType: 'full',
   animateRows: true,
   enableCharts: true,
   grouping: true,
   rowHeight: 35,
   enableRangeSelection: true,
   sideBar: true,
-  // enablePivotMode: true,
+  enablePivotMode: true,
   groupSelectsChildren: true,
   groupMultiAutoColumn: true,
   groupUseEntireRow: true,
