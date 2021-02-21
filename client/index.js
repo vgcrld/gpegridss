@@ -121,23 +121,23 @@ const tsmColumnDefs = [
         filterParams: dateFilter,
         type: ["config"],
       },
-      { 
+      {
         headerName: "Year",
         hide: true,
         field: "toStartOfYear(poll_ts)",
-        type: ["config"] 
+        type: ["config"],
       },
-      { 
+      {
         headerName: "Month",
         hide: true,
         field: "toStartOfMonth(poll_ts)",
-        type: ["config"]
+        type: ["config"],
       },
-      { 
+      {
         headerName: "Day",
         hide: true,
         field: "toStartOfDay(poll_ts)",
-        type: ["config"]
+        type: ["config"],
       },
       {
         headerName: "Activity",
@@ -153,7 +153,79 @@ const tsmColumnDefs = [
         filter: true,
         filterParams: tsmEntityFilter,
         type: ["config"],
-      }
+      },
+      {
+        headerName: "Details",
+        field: "CfgTsmTimelineActivity_details",
+        type: ["config"],
+      },
+      {
+        headerName: "Type",
+        field: "CfgTsmTimelineActivity_type",
+        type: ["config"],
+      },
+      { headerName: "Number", field: "CfgTsmTimelineNumber", type: ["config"] },
+      {
+        headerName: "As Node",
+        field: "CfgTsmTimelineAs_entity",
+        type: ["config"],
+      },
+      {
+        headerName: "Sub Entity",
+        field: "CfgTsmTimelineSub_entity",
+        type: ["config"],
+      },
+      {
+        headerName: "Comm Method",
+        field: "CfgTsmTimelineCommmeth",
+        type: ["config"],
+      },
+      {
+        headerName: "Address",
+        field: "CfgTsmTimelineAddress",
+        type: ["config"],
+      },
+      {
+        headerName: "Schedule",
+        field: "CfgTsmTimelineSchedule_name",
+        type: ["config"],
+      },
+      {
+        headerName: "Successful",
+        field: "CfgTsmTimelineSuccessful",
+        type: ["config"],
+      },
+      {
+        headerName: "Volume",
+        field: "CfgTsmTimelineVolume_name",
+        type: ["config"],
+      },
+      {
+        headerName: "Drive",
+        field: "CfgTsmTimelineDrive_name",
+        type: ["config"],
+      },
+      {
+        headerName: "Library",
+        field: "CfgTsmTimelineLibrary_name",
+        type: ["config"],
+      },
+      {
+        headerName: "Last Used",
+        field: "CfgTsmTimelineLast_use",
+        type: ["config"],
+      },
+      {
+        headerName: "Offsite Volumes",
+        field: "CfgTsmTimelineNum_offsite_vols",
+        type: ["config"],
+      },
+      { headerName: "Node", field: "CfgTsmTimelineNodeName", type: ["config"] },
+      {
+        headerName: "Instance",
+        field: "CfgTsmTimelineInstance",
+        type: ["config"],
+      },
     ],
   },
   {
@@ -163,31 +235,66 @@ const tsmColumnDefs = [
         headerName: "Examined",
         field: "TSMTIMELINE_Examined",
         type: ["trend", "rightAligned"],
-        valueFormatter: commaSeparateNumber,
       },
       {
         headerName: "Bytes",
         field: "TSMTIMELINE_Bytes",
         type: ["trend", "rightAligned"],
-        valueFormatter: commaSeparateNumber,
       },
       {
         headerName: "Affected",
         field: "TSMTIMELINE_Affected",
         type: ["trend", "rightAligned"],
-        valueFormatter: commaSeparateNumber,
       },
       {
         headerName: "Failed",
         field: "TSMTIMELINE_Failed",
         type: ["trend", "rightAligned"],
-        valueFormatter: commaSeparateNumber,
       },
       {
         headerName: "Idle",
         field: "TSMTIMELINE_Idle",
         type: ["trend", "rightAligned"],
-        valueFormatter: commaSeparateNumber,
+      },
+      {
+        headerName: "Media Wait",
+        field: "TSMTIMELINE_Mediaw",
+        type: ["trend", "rightAligned"],
+      },
+      {
+        headerName: "Processes",
+        field: "TSMTIMELINE_Processes",
+        type: ["trend", "rightAligned"],
+      },
+      {
+        headerName: "Completion Code",
+        field: "TSMTIMELINE_Completion_code",
+        type: ["trend", "rightAligned"],
+      },
+      {
+        headerName: "Comm Wait",
+        field: "TSMTIMELINE_Comm_wait",
+        type: ["trend", "rightAligned"],
+      },
+      {
+        headerName: "Bytes Protected",
+        field: "TSMTIMELINE_Bytes_protected",
+        type: ["trend", "rightAligned"],
+      },
+      {
+        headerName: "Bytes Written",
+        field: "TSMTIMELINE_Bytes_written",
+        type: ["trend", "rightAligned"],
+      },
+      {
+        headerName: "Dedupe Savings",
+        field: "TSMTIMELINE_Dedup_savings",
+        type: ["trend", "rightAligned"],
+      },
+      {
+        headerName: "Compression Savings",
+        field: "TSMTIMELINE_Comp_savings",
+        type: ["trend", "rightAligned"],
       },
     ],
   },
@@ -287,12 +394,18 @@ const gridOptions = {
       enableRowGroup: false,
       enableValue: true,
       enableSort: true,
+      filter: 'agNumberColumnFilter',
+      filterParams: {
+        buttons: [ 'reset', 'apply' ],
+      },
+      width: 150
+      // valueFormatter: commaSeparateNumber
     }
   },
 
   debug: true,
 
-  cacheBlockSize: 10,
+  cacheBlockSize: 250,
   // maxBlocksInCache: 3,
   // purgeClosedRowNodes: true,
   // maxConcurrentDatasourceRequests: 2,
