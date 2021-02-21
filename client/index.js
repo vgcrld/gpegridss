@@ -155,6 +155,8 @@ const itemColumnDefs = [
   // { headerName: "Name", field: "name", rowGroup: true, filter: true, filterParams: nameFilter },
   // { headerName: "ID", field: "item_id", rowGroup: true, type: "rightAligned" },
   { headerName: "Items", field: "key", aggFunc: "count", valueFormatter: "numberCellFormatter", type: "rightAligned", hide: false, sortable: true }, 
+  { headerName: "File", field: "file_key", aggFunc: "max", hide: false, sortable: true }, 
+  { headerName: "File", field: "file_key", aggFunc: "max", hide: false, sortable: true }, 
 ];
 
 const itemDatasource = {
