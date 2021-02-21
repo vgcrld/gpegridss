@@ -16,6 +16,30 @@ var typeFilter = {
   },
 };
 
+var tsmActivityFilter = {
+  buttons: [ 'reset', 'apply' ],
+  values: function (params) {
+    fetch('/tsmactivity')
+      .then(response => response.json())
+      .then((o) => {
+        let vals = o.rows.map( r => r.activity );
+        params.success(vals);
+    })
+  },
+};
+
+var tsmEntityFilter = {
+  buttons: [ 'reset', 'apply' ],
+  values: function (params) {
+    fetch('/tsmentity')
+      .then(response => response.json())
+      .then((o) => {
+        let vals = o.rows.map( r => r.entity );
+        params.success(vals);
+    })
+  },
+};
+
 var tagFilter = {
   buttons: [ 'reset', 'apply' ],
   values: function (params) {
@@ -81,46 +105,70 @@ function bob() {
 }
 
 const tsmColumnDefs = [
-  { headerName: "Activity", field: "CfgTsmTimelineActivity", rowGroup: true },
   {
-    headerName: "Year",
-    field: "toYear(toStartOfYear(poll_ts))",
-    rowGroup: true,
+    headerName: "Configuration",
+    children: [
+      {
+        headerName: "Date/Time",
+        field: "poll_ts",
+        filter: "agDateColumnFilter",
+        filterParams: dateFilter,
+        type: ["config"],
+      },
+      {
+        headerName: "Activity",
+        field: "CfgTsmTimelineActivity",
+        rowGroup: true,
+        filter: true,
+        filterParams: tsmActivityFilter,
+        type: ["config"],
+      },
+      {
+        headerName: "Entity",
+        field: "CfgTsmTimelineEntity",
+        filter: true,
+        filterParams: tsmEntityFilter,
+        type: ["config"],
+      },
+      { headerName: "Year", field: "toStartOfYear(poll_ts)" },
+      { headerName: "Month", field: "toStartOfMonth(poll_ts)" },
+      { headerName: "Day", field: "toStartOfDay(poll_ts)" },
+    ],
   },
   {
-    headerName: "Month",
-    field: "toMonth(toStartOfMonth(poll_ts))",
-    rowGroup: true,
-  },
-  {
-    headerName: "Day",
-    field: "toDayOfMonth(toStartOfDay(poll_ts))",
-    rowGroup: true,
-  },
-  { headerName: "Entity", field: "CfgTsmTimelineEntity", aggFunc: "max" },
-  {
-    headerName: "Bytes",
-    field: "TSMTIMELINE_Examined",
-    aggFunc: "max",
-    valueFormatter: commaSeparateNumber,
-  },
-  {
-    headerName: "Bytes",
-    field: "TSMTIMELINE_Affected",
-    aggFunc: "max",
-    valueFormatter: commaSeparateNumber,
-  },
-  {
-    headerName: "Bytes",
-    field: "TSMTIMELINE_Failed",
-    aggFunc: "max",
-    valueFormatter: commaSeparateNumber,
-  },
-  {
-    headerName: "Bytes",
-    field: "TSMTIMELINE_Idle",
-    aggFunc: "max",
-    valueFormatter: commaSeparateNumber,
+    headerName: "Trend",
+    children: [
+      {
+        headerName: "Examined",
+        field: "TSMTIMELINE_Examined",
+        type: ["trend"],
+        valueFormatter: commaSeparateNumber,
+      },
+      {
+        headerName: "Bytes",
+        field: "TSMTIMELINE_Bytes",
+        type: ["trend"],
+        valueFormatter: commaSeparateNumber,
+      },
+      {
+        headerName: "Affected",
+        field: "TSMTIMELINE_Affected",
+        type: ["trend"],
+        valueFormatter: commaSeparateNumber,
+      },
+      {
+        headerName: "Failed",
+        field: "TSMTIMELINE_Failed",
+        type: ["trend"],
+        valueFormatter: commaSeparateNumber,
+      },
+      {
+        headerName: "Idle",
+        field: "TSMTIMELINE_Idle",
+        type: ["trend"],
+        valueFormatter: commaSeparateNumber,
+      },
+    ],
   },
 ];
 
@@ -145,15 +193,15 @@ const tsmDatasource = {
 };
 
 const itemColumnDefs = [
-  { headerName: "Date/Time", field: "last_trend_ts", hide: true, rowGroup: false, sort: 'asc', filter: 'agDateColumnFilter', filterParams: dateFilter },
-  { headerName: "Year", field: "toStartOfYear(last_trend_ts)", rowGroup: true },
-  { headerName: "Month", field: "toStartOfMonth(last_trend_ts)", rowGroup: true },
-  { headerName: "Day", field: "toStartOfDay(last_trend_ts)", rowGroup: true },
-  { headerName: "Hour", field: "toStartOfHour(last_trend_ts)", rowGroup: true },
-  // { headerName: "Tags", field: "toString(tags)", rowGroup: true, filter: true, filterParams: tagFilter },
-  { headerName: "Type", field: "type", rowGroup: true, filter: true, filterParams: typeFilter },
-  // { headerName: "Name", field: "name", rowGroup: true, filter: true, filterParams: nameFilter },
-  // { headerName: "ID", field: "item_id", rowGroup: true, type: "rightAligned" },
+  { headerName: "Date/Time", field: "last_trend_ts", hide: true, enableRowGroup: false, sort: 'asc', filter: 'agDateColumnFilter', filterParams: dateFilter },
+  { headerName: "Year", field: "toStartOfYear(last_trend_ts)", enableRowGroup: true },
+  { headerName: "Month", field: "toStartOfMonth(last_trend_ts)", enableRowGroup: true },
+  { headerName: "Day", field: "toStartOfDay(last_trend_ts)", enableRowGroup: true },
+  { headerName: "Hour", field: "toStartOfHour(last_trend_ts)", enableRowGroup: true },
+  // { headerName: "Tags", field: "toString(tags)", enableRowGroup: true, filter: true, filterParams: tagFilter },
+  { headerName: "Type", field: "type", enableRowGroup: true, filter: true, filterParams: typeFilter },
+  // { headerName: "Name", field: "name", enableRowGroup: true, filter: true, filterParams: nameFilter },
+  // { headerName: "ID", field: "item_id", enableRowGroup: true, type: "rightAligned" },
   { headerName: "Items", field: "key", aggFunc: "count", valueFormatter: "numberCellFormatter", type: "rightAligned", hide: false, sortable: true }, 
   { headerName: "File", field: "file_key", aggFunc: "max", hide: false, sortable: true }, 
   { headerName: "File", field: "file_key", aggFunc: "max", hide: false, sortable: true }, 
@@ -179,10 +227,10 @@ const itemDatasource = {
   },
 };
 
-// var gpeDatasource = tsmDatasource;
-// var gpeColumns = tsmColumnDefs;
-var gpeDatasource = itemDatasource;
-var gpeColumns = itemColumnDefs;
+var gpeDatasource = tsmDatasource;
+var gpeColumns = tsmColumnDefs;
+// var gpeDatasource = itemDatasource;
+// var gpeColumns = itemColumnDefs;
 
 const gridOptions = {
   rowModelType: "serverSide",
@@ -203,9 +251,22 @@ const gridOptions = {
 
   defaultColDef: {
     // filter: true,
-    // sortable: true,
-    hide: true,
-    resizable: true,
+    sortable: true,
+    hide: false,
+    resizable: true
+  },
+
+  columnTypes: {
+    config: {
+      enableRowGroup: true,
+      enableValue: false,
+      sort: "asc"
+    },
+    trend: {
+      enableRowGroup: false,
+      enableValue: true,
+      sort: "asc",
+    }
   },
 
   debug: true,

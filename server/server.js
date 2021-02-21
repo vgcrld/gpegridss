@@ -50,6 +50,20 @@ app.get('/tags', function (req, res) {
     });
 });
 
+app.get('/tsmactivity', function (req, res) {
+    let sql = `select distinct CfgTsmTimelineActivity as activity from transient_tsmtimeline`
+    GpeDataService.getGpeData(sql, connection, req.body, (rows) => {
+        res.json({rows: rows});
+    });
+});
+
+app.get('/tsmentity', function (req, res) {
+    let sql = `select distinct CfgTsmTimelineEntity as entity from transient_tsmtimeline`
+    GpeDataService.getGpeData(sql, connection, req.body, (rows) => {
+        res.json({rows: rows});
+    });
+});
+
 app.get('/names', function (req, res) {
     let sql = `select distinct name from __items where type in ('brocade','host')`
     GpeDataService.getGpeData(sql, connection, req.body, (rows) => {
