@@ -98,6 +98,12 @@ var nameFilter = {
   },
 };
 
+// autosize all columns
+function autosizeAllColumns() {
+  let allColIds = gridOptions.columnApi.getAllColumns().map( c => c.colId );
+  gridOptions.columnApi.autoSizeAllColumns(allColIds);
+}
+
 // Call every time the quick filter is updated to narrow the page.
 function bob() {
   val = document.querySelector("#quick-filter").value;
@@ -115,6 +121,24 @@ const tsmColumnDefs = [
         filterParams: dateFilter,
         type: ["config"],
       },
+      { 
+        headerName: "Year",
+        hide: true,
+        field: "toStartOfYear(poll_ts)",
+        type: ["config"] 
+      },
+      { 
+        headerName: "Month",
+        hide: true,
+        field: "toStartOfMonth(poll_ts)",
+        type: ["config"]
+      },
+      { 
+        headerName: "Day",
+        hide: true,
+        field: "toStartOfDay(poll_ts)",
+        type: ["config"]
+      },
       {
         headerName: "Activity",
         field: "CfgTsmTimelineActivity",
@@ -129,10 +153,7 @@ const tsmColumnDefs = [
         filter: true,
         filterParams: tsmEntityFilter,
         type: ["config"],
-      },
-      { headerName: "Year", field: "toStartOfYear(poll_ts)" },
-      { headerName: "Month", field: "toStartOfMonth(poll_ts)" },
-      { headerName: "Day", field: "toStartOfDay(poll_ts)" },
+      }
     ],
   },
   {
@@ -141,31 +162,31 @@ const tsmColumnDefs = [
       {
         headerName: "Examined",
         field: "TSMTIMELINE_Examined",
-        type: ["trend"],
+        type: ["trend", "rightAligned"],
         valueFormatter: commaSeparateNumber,
       },
       {
         headerName: "Bytes",
         field: "TSMTIMELINE_Bytes",
-        type: ["trend"],
+        type: ["trend", "rightAligned"],
         valueFormatter: commaSeparateNumber,
       },
       {
         headerName: "Affected",
         field: "TSMTIMELINE_Affected",
-        type: ["trend"],
+        type: ["trend", "rightAligned"],
         valueFormatter: commaSeparateNumber,
       },
       {
         headerName: "Failed",
         field: "TSMTIMELINE_Failed",
-        type: ["trend"],
+        type: ["trend", "rightAligned"],
         valueFormatter: commaSeparateNumber,
       },
       {
         headerName: "Idle",
         field: "TSMTIMELINE_Idle",
-        type: ["trend"],
+        type: ["trend", "rightAligned"],
         valueFormatter: commaSeparateNumber,
       },
     ],
@@ -243,7 +264,7 @@ const gridOptions = {
   sideBar: true,
   enablePivotMode: true,
   groupSelectsChildren: true,
-  groupMultiAutoColumn: true,
+  groupMultiAutoColumn: false,
   groupUseEntireRow: true,
   showOpenedGroup: true,
 
@@ -260,18 +281,18 @@ const gridOptions = {
     config: {
       enableRowGroup: true,
       enableValue: false,
-      sort: "asc"
+      enableSort: true
     },
     trend: {
       enableRowGroup: false,
       enableValue: true,
-      sort: "asc",
+      enableSort: true,
     }
   },
 
   debug: true,
 
-  cacheBlockSize: 200,
+  cacheBlockSize: 10,
   // maxBlocksInCache: 3,
   // purgeClosedRowNodes: true,
   // maxConcurrentDatasourceRequests: 2,
@@ -282,6 +303,7 @@ const gridDiv = document.querySelector("#myGrid");
 new Grid(gridDiv, gridOptions);
 
 gridOptions.api.setServerSideDatasource(gpeDatasource);
+// autosizeAllColumns();
 
 function commaSeparateNumber(params) {
   let val = params.value;
