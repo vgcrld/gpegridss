@@ -2,7 +2,7 @@
 const p = p => console.log(p);
 const t = t => console.table(t);
 
-class GpeDataService {
+export default class GpeDataService {
 
   getData(connection, table, request, resultsCallback) {
     const SQL = this.buildSql(table,request);
@@ -257,5 +257,3 @@ class GpeDataService {
     }
   }
 }
-
-export default new GpeDataService();
