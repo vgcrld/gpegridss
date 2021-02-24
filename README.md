@@ -8,6 +8,24 @@ A reference implementation showing how to perform server-side operations using a
 
 For full details see: http://ag-grid.com/nodejs-server-side-operations/
 
+The repo is here: git clone https://github.com/ag-grid/ag-grid-server-side-nodejs-example.git
+
+
 ## Usage
 
-See the setup doc [here](data/accessing-ch.md) first.
+```
+# Clone the Repo
+git clone git@github.com:vgcrld/gpegridss.git && cd gpegridss
+
+# Get packages
+npm install
+
+# Make sure 8123 is port forwared from core to clickhouse
+kubectl port-forward --namespace default svc/core-clickhouse-default-0 8123 &
+
+# Start the app
+npm run dev
+
+```
+
+Browse to the local server: http://localhost:4000
