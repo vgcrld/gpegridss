@@ -1,6 +1,7 @@
 import express from 'express';
 import { ClickHouse } from 'clickhouse';
 import GpeDataService from './gpeDataService.js';
+import bodyParser from 'body-parser';
 
 const gpedata = new GpeDataService()
 
@@ -22,6 +23,9 @@ const connection =  new ClickHouse({
     });
 
 const app = express();
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 // app.use(express.static('public'))
 app.use('/javascript', express.static('public/javascript'))
@@ -68,13 +72,13 @@ app.get('/names', function (req, res) {
 });
 
 app.get('/gpeItems', function (req, res) {
-    gpedata.getData(connection, '__items', req.body, (rows, lastRow) => {
+    gpedata.getDataForGrid(connection, '__items', req.body, (rows, lastRow) => {
         res.json({rows: rows, lastRow: lastRow});
     });
 });
 
 app.post('/gpeTsmTimeline', function (req, res) {
-    gpedata.getData(connection, 'transient_tsmtimeline', req.body, (rows, lastRow) => {
+    gpedata.getDataForGrid(connection, 'transient_tsmtimeline', req.body, (rows, lastRow) => {
         res.json({rows: rows, lastRow: lastRow});
     });
 });

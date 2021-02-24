@@ -299,8 +299,6 @@ const tsmColumnDefs = [
 
 const tsmDatasource = {
   getRows(params) {
-    console.log(JSON.stringify(params.request, null, 1));
-
     fetch("/gpeTsmTimeline/", {
       method: "post",
       body: JSON.stringify(params.request),
@@ -308,6 +306,7 @@ const tsmDatasource = {
     })
       .then((httpResponse) => httpResponse.json())
       .then((response) => {
+        console.log(response)
         params.successCallback(response.rows, response.lastRow);
       })
       .catch((error) => {

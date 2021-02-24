@@ -4,7 +4,7 @@ const t = t => console.table(t);
 
 export default class GpeDataService {
 
-  getData(connection, table, request, resultsCallback) {
+  getDataForGrid(connection, table, request, resultsCallback) {
     const SQL = this.buildSql(table,request);
     connection.query(SQL, (error, results) => {
       const rowCount = this.getRowCount(request, results);
