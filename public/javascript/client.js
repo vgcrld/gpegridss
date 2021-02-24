@@ -335,7 +335,7 @@ const itemDatasource = {
   getRows(params) {
     console.log(JSON.stringify(params.request, null, 1));
 
-    fetch("./gpeItems/", {
+    fetch("/gpeItems/", {
       method: "post",
       body: JSON.stringify(params.request),
       headers: { "Content-Type": "application/json; charset=utf-8" },

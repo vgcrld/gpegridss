@@ -32,9 +32,9 @@ app.use('/javascript', express.static('public/javascript'))
 app.use('/views', express.static('public/views'))
 app.use('/styes', express.static('public/styes'))
 
-// app.get('/', function(req, res){
-//     res.redirect('/views/index.html');
-// });
+app.get('/', function(req, res){
+    res.redirect('/views/index.html');
+});
 
 app.get('/types', function (req, res) {
     let sql = `select distinct type from __items`
@@ -71,7 +71,7 @@ app.get('/names', function (req, res) {
     });
 });
 
-app.get('/gpeItems', function (req, res) {
+app.post('/gpeItems', function (req, res) {
     gpedata.getDataForGrid(connection, '__items', req.body, (rows, lastRow) => {
         res.json({rows: rows, lastRow: lastRow});
     });
