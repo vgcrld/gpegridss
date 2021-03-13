@@ -407,7 +407,8 @@ const gridOptions = {
     config: {
       enableRowGroup: true,
       enableValue: true,
-      enableSort: true
+      enableSort: true,
+      chartDataType: 'category'
     },
     trend: {
       enableRowGroup: false,
@@ -417,6 +418,7 @@ const gridOptions = {
       filterParams: {
         buttons: [ 'reset', 'apply' ],
       },
+      chartDataType: 'series',
       width: 150
       // valueFormatter: commaSeparateNumber
     }
