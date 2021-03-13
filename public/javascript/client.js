@@ -12,6 +12,17 @@ var typeFilter = {
     })
   },
 };
+var tsmTypeFilter = {
+  buttons: [ 'reset', 'apply' ],
+  values: function (params) {
+    fetch('/tsmtypes')
+      .then(response => response.json())
+      .then((o) => {
+        let vals = o.rows.map( r => r.type );
+        params.success(vals);
+    })
+  },
+};
 
 var tsmActivityFilter = {
   buttons: [ 'reset', 'apply' ],
@@ -109,15 +120,8 @@ function bob() {
 
 const tsmColumnDefs = [
   {
-    headerName: "Configuration",
+    headerName: "Date Grouping",
     children: [
-      {
-        headerName: "Date/Time",
-        field: "poll_ts",
-        filter: "agDateColumnFilter",
-        filterParams: dateFilter,
-        type: ["config"],
-      },
       {
         headerName: "Year",
         hide: true,
@@ -134,6 +138,18 @@ const tsmColumnDefs = [
         headerName: "Day",
         hide: true,
         field: "toStartOfDay(poll_ts)",
+        type: ["config"],
+      }
+    ]
+  },
+  {
+    headerName: "Configuration",
+    children: [
+      {
+        headerName: "Date/Time",
+        field: "poll_ts",
+        filter: "agDateColumnFilter",
+        filterParams: dateFilter,
         type: ["config"],
       },
       {
@@ -160,6 +176,8 @@ const tsmColumnDefs = [
         headerName: "Type",
         field: "CfgTsmTimelineActivity_type",
         type: ["config"],
+        filter: true,
+        filterParams: tsmTypeFilter
       },
       { headerName: "Number", field: "CfgTsmTimelineNumber", type: ["config"] },
       {
@@ -229,13 +247,13 @@ const tsmColumnDefs = [
     headerName: "Trend",
     children: [
       {
-        headerName: "Examined",
-        field: "TSMTIMELINE_Examined",
+        headerName: "Bytes",
+        field: "TSMTIMELINE_Bytes",
         type: ["trend", "rightAligned"],
       },
       {
-        headerName: "Bytes",
-        field: "TSMTIMELINE_Bytes",
+        headerName: "Examined",
+        field: "TSMTIMELINE_Examined",
         type: ["trend", "rightAligned"],
       },
       {

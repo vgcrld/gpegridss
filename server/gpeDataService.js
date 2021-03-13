@@ -2,6 +2,7 @@ export default class GpeDataService {
 
   getDataForGrid(connection, table, request, resultsCallback) {
     const SQL = this.buildSql(table,request);
+    console.log(SQL);
     connection.query(SQL, (error, results) => {
       const rowCount = this.getRowCount(request, results);
       const resultsForPage = this.cutResultsToPageSize(request, results);
@@ -28,8 +29,6 @@ export default class GpeDataService {
 
     const SQL = selectSql + fromSql + whereSql + groupBySql + orderBySql + limitSql;
 
-    console.log(SQL);
-    
     return SQL;
   }
 
@@ -51,6 +50,8 @@ export default class GpeDataService {
 
       return " select " + colsToSelect.join(", ");
     }
+    
+    console.log(request)
     
     return " select *";
   }

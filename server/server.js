@@ -64,6 +64,13 @@ app.get('/tsmentity', function (req, res) {
     });
 });
 
+app.get('/tsmtypes', function (req, res) {
+    let sql = `select distinct CfgTsmTimelineActivity_type as type from transient_tsmtimeline`
+    gpedata.getGpeData(sql, connection, req.body, (rows) => {
+        res.json({rows: rows});
+    });
+});
+
 app.get('/names', function (req, res) {
     let sql = `select distinct name from __items where type in ('brocade','host')`
     gpedata.getGpeData(sql, connection, req.body, (rows) => {
