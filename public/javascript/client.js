@@ -361,6 +361,7 @@ const gridOptions = {
   showOpenedGroup: true,
   animateRows: true,
   enableCharts: true,
+  rowGroupPanelShow: 'always',
   rowHeight: 35,
   enableRangeSelection: true,
   sideBar: {
@@ -394,8 +395,6 @@ const gridOptions = {
       { statusPanel: 'agAggregationComponent' },
     ],
   },
-
-  rowGroupPanelShow: true,
 
   defaultColDef: {
     // filter: true,
