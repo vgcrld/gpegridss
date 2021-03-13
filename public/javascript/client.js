@@ -358,15 +358,44 @@ var gpeColumns = tsmColumnDefs;
 
 const gridOptions = {
   rowModelType: "serverSide",
+  showOpenedGroup: true,
   animateRows: true,
   enableCharts: true,
   rowHeight: 35,
   enableRangeSelection: true,
-  sideBar: true,
+  sideBar: {
+    toolPanels: [
+        {
+            id: 'columns',
+            labelDefault: 'Columns',
+            labelKey: 'columns',
+            iconKey: 'columns',
+            toolPanel: 'agColumnsToolPanel',
+        },
+        {
+            id: 'filters',
+            labelDefault: 'Filters',
+            labelKey: 'filters',
+            iconKey: 'filter',
+            toolPanel: 'agFiltersToolPanel',
+        }
+    ],
+    position: 'left',
+    defaultToolPanel: 'columns'
+  },
   groupMultiAutoColumn: false,
   groupUseEntireRow: true,
 
   columnDefs: gpeColumns,
+
+  statusBar: {
+    statusPanels: [
+      { statusPanel: 'agSelectedRowCountComponent' },
+      { statusPanel: 'agAggregationComponent' },
+    ],
+  },
+
+  rowGroupPanelShow: true,
 
   defaultColDef: {
     // filter: true,
@@ -378,7 +407,7 @@ const gridOptions = {
   columnTypes: {
     config: {
       enableRowGroup: true,
-      enableValue: false,
+      enableValue: true,
       enableSort: true
     },
     trend: {

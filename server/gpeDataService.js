@@ -1,7 +1,3 @@
-
-const p = p => console.log(p);
-const t = t => console.table(t);
-
 export default class GpeDataService {
 
   getDataForGrid(connection, table, request, resultsCallback) {
@@ -47,9 +43,7 @@ export default class GpeDataService {
 
       const rowGroupCol = rowGroupCols[groupKeys.length];
       colsToSelect.push(rowGroupCol.field);
-      p(rowGroupCol)
       valueCols.forEach(function (valueCol) {
-        p(valueCol)
         colsToSelect.push(
           valueCol.aggFunc + "(" + valueCol.field + ") as " + valueCol.field
         );
@@ -92,7 +86,7 @@ export default class GpeDataService {
       case 'lessThan':
         return `(${key} <= '${item.dateFrom}')`
       default:
-        p(`case for ${item.type} is not defined`)
+        console.log(`case for ${item.type} is not defined`)
         return null
     }
   }
@@ -165,7 +159,6 @@ export default class GpeDataService {
     }
 
     if (filterModel) {
-      p(filterModel)
       const keySet = Object.keys(filterModel);
       keySet.forEach(function (key) {
         const item = filterModel[key];
