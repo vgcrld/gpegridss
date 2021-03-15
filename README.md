@@ -38,6 +38,7 @@ create view grid_tsmtimeline as
 select toYear(toStartOfYear(poll_ts)) year,
        toMonth(toStartOfMonth(poll_ts)) month,
        toDayOfMonth(toStartOfDay(poll_ts)) day,
+       toDayOfWeek(toStartOfDay(poll_ts)) dayofweek,
        toHour(toStartOfHour(poll_ts)) hour,
        toMinute(toStartOfHour(poll_ts)) minute,
        * 

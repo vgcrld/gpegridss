@@ -57,7 +57,7 @@ app.get('/tsmtypes', function (req, res) {
 });
 
 app.post('/gpeTsmTimeline', function (req, res) {
-    gpedata.getDataForGrid(connection, 'transient_tsmtimeline', req.body, (rows, lastRow) => {
+    gpedata.getDataForGrid(connection, 'grid_tsmtimeline', req.body, (rows, lastRow) => {
         res.json({rows: rows, lastRow: lastRow});
     });
 });

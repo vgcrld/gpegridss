@@ -119,31 +119,39 @@ const tsmColumnDefs = [
       {
         headerName: "Year",
         hide: true,
-        field: "toStartOfYear(poll_ts)",
+        field: "year",
         type: ["config"],
       },
       {
         headerName: "Month",
         hide: true,
-        field: "toStartOfMonth(poll_ts)",
+        field: "month",
         type: ["config"],
+        valueFormatter: formatMonthToWord
       },
       {
         headerName: "Day",
         hide: true,
-        field: "toStartOfDay(poll_ts)",
+        field: "day",
         type: ["config"],
+      },
+      {
+        headerName: "Weekday",
+        hide: true,
+        field: "dayofweek",
+        type: ["config"],
+        valueFormatter: formatWeekdayToWord
       },
       {
         headerName: "Hour",
         hide: true,
-        field: "toStartOfHour(poll_ts)",
+        field: "hour",
         type: ["config"],
       },
       {
         headerName: "Minute",
         hide: true,
-        field: "toStartOfMinute(poll_ts)",
+        field: "minute",
         type: ["config"],
       }
     ]
@@ -450,9 +458,10 @@ function getDayPart(params) {
   return val.split(' ')[0]
 }
 
-function getMonthPart(params) {
-  var val = parseInt(params.value.split('-')[1])-1
+function formatMonthToWord(params) {
+  var val = params.value
   const dates = [
+    null,
     'January',
     'February',
     'March',
@@ -465,6 +474,20 @@ function getMonthPart(params) {
     'October',
     'November',
     'December',
+  ]
+  return dates[val]
+}
+function formatWeekdayToWord(params) {
+  var val = params.value
+  const dates = [
+    null,
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
   ]
   return dates[val]
 }
