@@ -112,12 +112,6 @@ function autosizeAllColumns() {
   gridOptions.columnApi.autoSizeAllColumns(allColIds);
 }
 
-// Call every time the quick filter is updated to narrow the page.
-function bob() {
-  val = document.querySelector("#quick-filter").value;
-  gridOptions.api.setQuickFilter(val);
-}
-
 const tsmColumnDefs = [
   {
     headerName: "Date Grouping",
@@ -139,6 +133,18 @@ const tsmColumnDefs = [
         hide: true,
         field: "toStartOfDay(poll_ts)",
         type: ["config"],
+      },
+      {
+        headerName: "Hour",
+        hide: true,
+        field: "toStartOfHour(poll_ts)",
+        type: ["config"],
+      },
+      {
+        headerName: "Minute",
+        hide: true,
+        field: "toStartOfMinute(poll_ts)",
+        type: ["config"],
       }
     ]
   },
@@ -148,14 +154,17 @@ const tsmColumnDefs = [
       {
         headerName: "Date/Time",
         field: "poll_ts",
+        hide: false,
         filter: "agDateColumnFilter",
         filterParams: dateFilter,
         type: ["config"],
+        sort: 'asc'
       },
       {
         headerName: "Activity",
         field: "CfgTsmTimelineActivity",
-        rowGroup: true,
+        hide: false,
+        //  rowGroup: true,
         filter: true,
         filterParams: tsmActivityFilter,
         type: ["config"],
@@ -164,6 +173,7 @@ const tsmColumnDefs = [
         headerName: "Entity",
         field: "CfgTsmTimelineEntity",
         filter: true,
+        hide: false,
         filterParams: tsmEntityFilter,
         type: ["config"],
       },
@@ -249,6 +259,7 @@ const tsmColumnDefs = [
       {
         headerName: "Bytes",
         field: "TSMTIMELINE_Bytes",
+        hide: false,
         type: ["trend", "rightAligned"],
       },
       {
@@ -334,45 +345,8 @@ const tsmDatasource = {
   },
 };
 
-const itemColumnDefs = [
-  { headerName: "Date/Time", field: "last_trend_ts", hide: true, enableRowGroup: false, sort: 'asc', filter: 'agDateColumnFilter', filterParams: dateFilter },
-  { headerName: "Year", field: "toStartOfYear(last_trend_ts)", enableRowGroup: true },
-  { headerName: "Month", field: "toStartOfMonth(last_trend_ts)", enableRowGroup: true },
-  { headerName: "Day", field: "toStartOfDay(last_trend_ts)", enableRowGroup: true },
-  { headerName: "Hour", field: "toStartOfHour(last_trend_ts)", enableRowGroup: true },
-  // { headerName: "Tags", field: "toString(tags)", enableRowGroup: true, filter: true, filterParams: tagFilter },
-  { headerName: "Type", field: "type", enableRowGroup: true, filter: true, filterParams: typeFilter },
-  // { headerName: "Name", field: "name", enableRowGroup: true, filter: true, filterParams: nameFilter },
-  // { headerName: "ID", field: "item_id", enableRowGroup: true, type: "rightAligned" },
-  { headerName: "Items", field: "key", aggFunc: "count", valueFormatter: "numberCellFormatter", type: "rightAligned", hide: false, sortable: true }, 
-  { headerName: "File", field: "file_key", aggFunc: "max", hide: false, sortable: true }, 
-  { headerName: "File", field: "file_key", aggFunc: "max", hide: false, sortable: true }, 
-];
-
-const itemDatasource = {
-  getRows(params) {
-    console.log(JSON.stringify(params.request, null, 1));
-
-    fetch("/gpeItems/", {
-      method: "post",
-      body: JSON.stringify(params.request),
-      headers: { "Content-Type": "application/json; charset=utf-8" },
-    })
-      .then((httpResponse) => httpResponse.json())
-      .then((response) => {
-        params.successCallback(response.rows, response.lastRow);
-      })
-      .catch((error) => {
-        console.error(error);
-        params.failCallback();
-      });
-  },
-};
-
 var gpeDatasource = tsmDatasource;
 var gpeColumns = tsmColumnDefs;
-// var gpeDatasource = itemDatasource;
-// var gpeColumns = itemColumnDefs;
 
 const gridOptions = {
   rowModelType: "serverSide",
@@ -426,12 +400,14 @@ const gridOptions = {
       enableRowGroup: true,
       enableValue: true,
       enableSort: true,
+      hide: true,
       chartDataType: 'category'
     },
     trend: {
       enableRowGroup: false,
       enableValue: true,
       enableSort: true,
+      hide: true,
       filter: 'agNumberColumnFilter',
       filterParams: {
         buttons: [ 'reset', 'apply' ],

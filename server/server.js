@@ -27,27 +27,12 @@ const app = express();
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 
-// app.use(express.static('public'))
 app.use('/javascript', express.static('public/javascript'))
 app.use('/views', express.static('public/views'))
 app.use('/styes', express.static('public/styes'))
 
 app.get('/', function(req, res){
     res.redirect('/views/index.html');
-});
-
-app.get('/types', function (req, res) {
-    let sql = `select distinct type from __items`
-    gpedata.getGpeData(sql, connection, req.body, (rows) => {
-        res.json({rows: rows});
-    });
-});
-
-app.get('/tags', function (req, res) {
-    let sql = `select distinct toString(tags) as tags from __items`
-    gpedata.getGpeData(sql, connection, req.body, (rows) => {
-        res.json({rows: rows});
-    });
 });
 
 app.get('/tsmactivity', function (req, res) {
@@ -68,19 +53,6 @@ app.get('/tsmtypes', function (req, res) {
     let sql = `select distinct CfgTsmTimelineActivity_type as type from transient_tsmtimeline`
     gpedata.getGpeData(sql, connection, req.body, (rows) => {
         res.json({rows: rows});
-    });
-});
-
-app.get('/names', function (req, res) {
-    let sql = `select distinct name from __items where type in ('brocade','host')`
-    gpedata.getGpeData(sql, connection, req.body, (rows) => {
-        res.json({rows: rows});
-    });
-});
-
-app.post('/gpeItems', function (req, res) {
-    gpedata.getDataForGrid(connection, '__items', req.body, (rows, lastRow) => {
-        res.json({rows: rows, lastRow: lastRow});
     });
 });
 
