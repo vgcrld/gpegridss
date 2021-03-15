@@ -360,7 +360,6 @@ var gpeColumns = tsmColumnDefs;
 
 const gridOptions = {
   rowModelType: "serverSide",
-  showOpenedGroup: true,
   animateRows: true,
   enableCharts: true,
   rowGroupPanelShow: 'always',
@@ -430,13 +429,13 @@ const gridOptions = {
     }
   },
 
-  debug: false,
+  debug: true,
 
   cacheBlockSize: 250,
-  maxBlocksInCache: 3,
+  // maxBlocksInCache: 3,
   // purgeClosedRowNodes: true,
   // maxConcurrentDatasourceRequests: 2,
-  blockLoadDebounceMillis: 1000
+  // blockLoadDebounceMillis: 1000
 };
 
 const gridDiv = document.querySelector("#myGrid");
