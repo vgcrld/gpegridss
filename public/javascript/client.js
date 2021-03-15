@@ -440,3 +440,31 @@ function commaSeparateNumber(params) {
   }
   return val;
 }
+
+function getYearPart(params) {
+  return params.value.split('-')[0]
+}
+
+function getDayPart(params) {
+  let val = params.value.split('-')[2]
+  return val.split(' ')[0]
+}
+
+function getMonthPart(params) {
+  var val = parseInt(params.value.split('-')[1])-1
+  const dates = [
+    'January',
+    'February',
+    'March',
+    'April',
+    'May',
+    'June',
+    'July',
+    'August',
+    'September',
+    'October',
+    'November',
+    'December',
+  ]
+  return dates[val]
+}
