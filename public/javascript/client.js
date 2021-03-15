@@ -120,12 +120,14 @@ const tsmColumnDefs = [
         headerName: "Year",
         hide: true,
         field: "year",
+        rowGroup: true,
         type: ["config"],
       },
       {
         headerName: "Month",
         hide: true,
         field: "month",
+        rowGroup: true,
         type: ["config"],
         valueFormatter: formatMonthToWord
       },
@@ -133,6 +135,7 @@ const tsmColumnDefs = [
         headerName: "Day",
         hide: true,
         field: "day",
+        rowGroup: true,
         type: ["config"],
       },
       {
@@ -172,7 +175,6 @@ const tsmColumnDefs = [
         headerName: "Activity",
         field: "CfgTsmTimelineActivity",
         hide: false,
-        //  rowGroup: true,
         filter: true,
         filterParams: tsmActivityFilter,
         type: ["config"],
@@ -372,6 +374,10 @@ const gridOptions = {
             labelKey: 'columns',
             iconKey: 'columns',
             toolPanel: 'agColumnsToolPanel',
+          //   toolPanelParams: {
+          //     suppressRowGroups: true,
+          //     suppressValues: false,
+          // }
         },
         {
             id: 'filters',
@@ -379,7 +385,7 @@ const gridOptions = {
             labelKey: 'filters',
             iconKey: 'filter',
             toolPanel: 'agFiltersToolPanel',
-        }
+        },
     ],
     position: 'left',
     defaultToolPanel: 'columns'
@@ -420,19 +426,17 @@ const gridOptions = {
       filterParams: {
         buttons: [ 'reset', 'apply' ],
       },
-      chartDataType: 'series',
-      width: 150
-      // valueFormatter: commaSeparateNumber
+      chartDataType: 'series'
     }
   },
 
-  debug: true,
+  debug: false,
 
   cacheBlockSize: 250,
-  // maxBlocksInCache: 3,
+  maxBlocksInCache: 3,
   // purgeClosedRowNodes: true,
   // maxConcurrentDatasourceRequests: 2,
-  // blockLoadDebounceMillis: 1000
+  blockLoadDebounceMillis: 1000
 };
 
 const gridDiv = document.querySelector("#myGrid");
