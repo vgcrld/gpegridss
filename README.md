@@ -33,7 +33,7 @@ Once inside CH run this SQL.
 
 ```SQL
 -- Run this to create the view that includes the year, month, etc splices.
-drop view if exists grid_tsmtimeline
+drop view if exists grid_tsmtimeline;
 
 create view grid_tsmtimeline as (
 select toYear(toStartOfYear(poll_ts)) year,
@@ -44,7 +44,6 @@ select toYear(toStartOfYear(poll_ts)) year,
        toMinute(toStartOfHour(poll_ts)) minute,
        * 
   from transient_tsmtimeline);
-)
 ```
 
 ## Usage
