@@ -120,22 +120,22 @@ const tsmColumnDefs = [
         headerName: "Year",
         hide: true,
         field: "year",
-        rowGroup: true,
+        // rowGroup: true,
         type: ["config"],
       },
       {
         headerName: "Month",
         hide: true,
         field: "month",
-        rowGroup: true,
+        // rowGroup: true,
         type: ["config"],
-        valueFormatter: formatMonthToWord
+        valueFormatter: formatMonthToWord,
       },
       {
         headerName: "Day",
         hide: true,
         field: "day",
-        rowGroup: true,
+        // rowGroup: true,
         type: ["config"],
       },
       {
@@ -143,7 +143,7 @@ const tsmColumnDefs = [
         hide: true,
         field: "dayofweek",
         type: ["config"],
-        valueFormatter: formatWeekdayToWord
+        valueFormatter: formatWeekdayToWord,
       },
       {
         headerName: "Hour",
@@ -156,8 +156,8 @@ const tsmColumnDefs = [
         hide: true,
         field: "minute",
         type: ["config"],
-      }
-    ]
+      },
+    ],
   },
   {
     headerName: "Configuration",
@@ -169,7 +169,7 @@ const tsmColumnDefs = [
         filter: "agDateColumnFilter",
         filterParams: dateFilter,
         type: ["config"],
-        sort: 'asc'
+        sort: "asc",
       },
       {
         headerName: "Activity",
@@ -177,6 +177,7 @@ const tsmColumnDefs = [
         hide: false,
         filter: true,
         filterParams: tsmActivityFilter,
+        rowGroup: true,
         type: ["config"],
       },
       {
@@ -197,9 +198,14 @@ const tsmColumnDefs = [
         field: "CfgTsmTimelineActivity_type",
         type: ["config"],
         filter: true,
-        filterParams: tsmTypeFilter
+        aggFunc: 'count',
+        filterParams: tsmTypeFilter,
       },
-      { headerName: "Number", field: "CfgTsmTimelineNumber", type: ["config"] },
+      { 
+        headerName: "Number", 
+        field: "CfgTsmTimelineNumber", 
+        type: ["config"] 
+      },
       {
         headerName: "As Node",
         field: "CfgTsmTimelineAs_entity",
@@ -255,7 +261,11 @@ const tsmColumnDefs = [
         field: "CfgTsmTimelineNum_offsite_vols",
         type: ["config"],
       },
-      { headerName: "Node", field: "CfgTsmTimelineNodeName", type: ["config"] },
+      { 
+        headerName: "Node", 
+        field: "CfgTsmTimelineNodeName", 
+        type: ["config"] 
+      },
       {
         headerName: "Instance",
         field: "CfgTsmTimelineInstance",
@@ -271,6 +281,8 @@ const tsmColumnDefs = [
         field: "TSMTIMELINE_Bytes",
         hide: false,
         type: ["trend", "rightAligned"],
+        aggFunc: 'sum',
+        valueFormatter: bytesFormatter,
       },
       {
         headerName: "Examined",
@@ -316,21 +328,29 @@ const tsmColumnDefs = [
         headerName: "Bytes Protected",
         field: "TSMTIMELINE_Bytes_protected",
         type: ["trend", "rightAligned"],
+        hide: false,
+        valueFormatter: bytesFormatter,
       },
       {
         headerName: "Bytes Written",
         field: "TSMTIMELINE_Bytes_written",
         type: ["trend", "rightAligned"],
+        hide: false,
+        valueFormatter: bytesFormatter,
       },
       {
         headerName: "Dedupe Savings",
         field: "TSMTIMELINE_Dedup_savings",
         type: ["trend", "rightAligned"],
+        hide: false,
+        valueFormatter: bytesFormatter,
       },
       {
         headerName: "Compression Savings",
         field: "TSMTIMELINE_Comp_savings",
         type: ["trend", "rightAligned"],
+        hide: false,
+        valueFormatter: bytesFormatter,
       },
     ],
   },
@@ -359,8 +379,8 @@ var gpeDatasource = tsmDatasource;
 var gpeColumns = tsmColumnDefs;
 
 const gridOptions = {
-  rowModelType: "serverSide",
-  animateRows: true,
+  pivotMode: true,
+  animateRows: false,
   enableCharts: true,
   rowGroupPanelShow: 'always',
   rowHeight: 35,
@@ -410,13 +430,15 @@ const gridOptions = {
 
   columnTypes: {
     config: {
+      allowedAggFuncs: ['count'],
       enableRowGroup: true,
       enableValue: true,
       enableSort: true,
       hide: true,
-      chartDataType: 'category'
+      // chartDataType: 'category'
     },
     trend: {
+      allowedAggFuncs: ['min', 'max', 'count', 'sum', 'avg'],
       enableRowGroup: false,
       enableValue: true,
       enableSort: true,
@@ -425,16 +447,20 @@ const gridOptions = {
       filterParams: {
         buttons: [ 'reset', 'apply' ],
       },
-      chartDataType: 'series'
+      chartDataType: 'series',
+      valueFormatter: numberFormatter
     }
   },
 
   debug: true,
 
-  cacheBlockSize: 250,
-  // maxBlocksInCache: 3,
+  rowModelType: 'serverSide',
+  rowBuffer: 150,
+  serverSideStoreType: 'partial',
+  cacheBlockSize: 600,
+  maxBlocksInCache: 2,
   // purgeClosedRowNodes: true,
-  // maxConcurrentDatasourceRequests: 2,
+  maxConcurrentDatasourceRequests: 2,
   // blockLoadDebounceMillis: 1000
 };
 
@@ -493,4 +519,32 @@ function formatWeekdayToWord(params) {
     'Saturday',
   ]
   return dates[val]
+}
+
+function bytesFormatter(params) {
+  var val = params.value
+  if (val > 1024**4) {
+    return round(val/1024**4) + ' TiB'
+  } if (val > 1024**3) {
+    return round(val/1024**3) + ' GiB'
+  } if (val > 1024**2) {
+    return round(val/1024**2) + ' MiB'
+  } if (val > 1024**1) {
+    return round(val/1024**1) + ' KiB'
+  } else {
+    return round(val) + ' iB'
+  }
+}
+
+function numberFormatter(params) {
+  var val = params.value
+  if (val > 1000000) {
+    debugger
+  }
+  return round(val,2)
+}
+
+function round(number, decimals=0) {
+  const fact = Math.pow(10, decimals);
+  return Math.round((number*fact)/fact)
 }
