@@ -198,7 +198,6 @@ const tsmColumnDefs = [
         field: "CfgTsmTimelineActivity_type",
         type: ["config"],
         filter: true,
-        aggFunc: 'count',
         filterParams: tsmTypeFilter,
       },
       { 
@@ -452,7 +451,7 @@ const gridOptions = {
     }
   },
 
-  debug: true,
+  debug: false,
 
   rowModelType: 'serverSide',
   rowBuffer: 150,
@@ -460,7 +459,7 @@ const gridOptions = {
   cacheBlockSize: 600,
   maxBlocksInCache: 2,
   // purgeClosedRowNodes: true,
-  maxConcurrentDatasourceRequests: 2,
+  // maxConcurrentDatasourceRequests: 2,
   // blockLoadDebounceMillis: 1000
 };
 
@@ -468,6 +467,7 @@ const gridDiv = document.querySelector("#myGrid");
 new agGrid.Grid(gridDiv, gridOptions);
 
 gridOptions.api.setServerSideDatasource(gpeDatasource);
+// gridOptions.api.sizeColumnsToFit()
 // autosizeAllColumns();
 
 function commaSeparateNumber(params) {
