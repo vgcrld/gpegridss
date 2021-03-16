@@ -364,7 +364,6 @@ const tsmDatasource = {
     })
       .then((httpResponse) => httpResponse.json())
       .then((response) => {
-        console.log(response)
         params.successCallback(response.rows, response.lastRow);
       })
       .catch((error) => {
@@ -463,13 +462,6 @@ const gridOptions = {
   // blockLoadDebounceMillis: 1000
 };
 
-const gridDiv = document.querySelector("#myGrid");
-new agGrid.Grid(gridDiv, gridOptions);
-
-gridOptions.api.setServerSideDatasource(gpeDatasource);
-// gridOptions.api.sizeColumnsToFit()
-// autosizeAllColumns();
-
 function commaSeparateNumber(params) {
   let val = params.value;
   while (/(\d+)(\d{3})/.test(val.toString())) {
@@ -548,3 +540,8 @@ function round(number, decimals=0) {
   const fact = Math.pow(10, decimals);
   return Math.round((number*fact)/fact)
 }
+
+const gridDiv = document.querySelector("#myGrid");
+const gpegrid = new agGrid.Grid(gridDiv, gridOptions);
+
+gridOptions.api.setServerSideDatasource(tsmDatasource);
